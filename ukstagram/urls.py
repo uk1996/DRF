@@ -8,4 +8,5 @@ router.register('posts', views.PostViewSet) # 3개의 URL을 만들어줌(list, 
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('public/', views.public_post_list, name='public_post_list'),
 ]
