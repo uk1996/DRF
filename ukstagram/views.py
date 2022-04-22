@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import PostSerializer
@@ -12,16 +14,24 @@ class PostViewSet(ModelViewSet):
 
 
 
-class PublicPostListAPIView(ListCreateAPIView):
-    queryset = Post.objects.all() # filter(is_public=True)
-    serializer_class = PostSerializer
+# 방법 1
+# class PublicPostListAPIView(ListAPIView):
+#     queryset = Post.objects.filter(is_public=True)
+#     serializer_class = PostSerializer
+# public_post_list = PublicPostListAPIView.as_view()
 
-    # def post(self, request, format=None):
-    #     serializer = PostSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save(author=request.user)
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# 방법 2
+# class PublicPostListAPIView(APIView):
+#     def get(self, request):
+#         qs = Post.objects.filter(is_public=True)
+#         serializer = PostSerializer(instance=qs, many=True)
+#         return Response(serializer.data)
+# public_post_list = PublicPostListAPIView.as_view()
 
 
-public_post_list = PublicPostListAPIView.as_view()
+# 방법 3
+@api_view(['GET'])
+def public_post_list(request):
+    qs = Post.objects.filter(is_public=True)
+    serializer = PostSerializer(instance=qs, many=True)
+    return Response(serializer.data)
