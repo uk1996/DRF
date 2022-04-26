@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import PostSerializer
 from .models import Post
+from .permissions import IsAuthorOrReadOnly
 
 # 방법 1
 # class PublicPostListAPIView(ListAPIView):
@@ -35,7 +36,7 @@ from .models import Post
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    # permission_classes = [IsAuthenticated] # 인증이 되어있음을 보장 받을 수 있음
+    permission_classes = [IsAuthorOrReadOnly] # 인증이 되어있음을 보장 받을 수 있음
 
     # def create(self, request):
     #     serializer = self.get_serializer(data=request.data)
