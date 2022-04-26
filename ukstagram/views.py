@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view, action
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListCreateAPIView, ListAPIView
@@ -34,6 +35,7 @@ from .models import Post
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    # permission_classes = [IsAuthenticated] # 인증이 되어있음을 보장 받을 수 있음
 
     # def create(self, request):
     #     serializer = self.get_serializer(data=request.data)
