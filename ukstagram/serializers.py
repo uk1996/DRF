@@ -10,8 +10,9 @@ from .models import Post
 
 class PostSerializer(ModelSerializer):
     username = serializers.ReadOnlyField(source='author.username')
+    ip = serializers.ReadOnlyField()
     # author = AuthSerializer()
 
     class Meta:
         model = Post
-        fields = ['pk', 'username', 'message', 'created_at', 'updated_at', 'is_public']
+        fields = ['pk', 'username', 'message', 'created_at', 'updated_at', 'is_public', 'ip']

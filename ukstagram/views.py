@@ -43,7 +43,7 @@ class PostViewSet(ModelViewSet):
     #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(author=self.request.user, ip=self.request.META['REMOTE_ADDR'])
 
     @action(detail=False, methods=['GET'])
     def public(self, request):
