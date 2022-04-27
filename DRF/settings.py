@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import json
 import os
+import datetime
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
 
@@ -59,6 +60,8 @@ INSTALLED_APPS = [
     # third apps
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_jwt',
+    'rest_framework_jwt.blacklist',
     # local apps
     'accounts',
     'ukstagram',
@@ -150,9 +153,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     ],
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=365),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=1000),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ],
