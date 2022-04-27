@@ -72,7 +72,13 @@ class PostViewSet(ModelViewSet):
 
     @action(detail=False, methods=['GET'])
     def public(self, request):
-        qs = self.get_queryset().filter(is_public=True)
+        qs = self.get_queryset().filter(is_public=True).order_by('-id')
+
+        page = self.paginate_queryset(qs)
+        if page:
+            serializer = self.get_serializer(instance=page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = self.get_serializer(instance=qs, many=True)
         return Response(serializer.data)
 
