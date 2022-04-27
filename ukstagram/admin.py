@@ -3,4 +3,5 @@ from .models import Post
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['message']
+    list_display = ['id', 'message', 'author']

@@ -9,6 +9,7 @@ from rest_framework import status
 from .serializers import PostSerializer
 from .models import Post
 from .permissions import IsAuthorOrReadOnly
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 # 방법 1
 # class PublicPostListAPIView(ListAPIView):
@@ -36,7 +37,28 @@ from .permissions import IsAuthorOrReadOnly
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
     permission_classes = [IsAuthorOrReadOnly] # 인증이 되어있음을 보장 받을 수 있음
+
+    filter_backends = [SearchFilter, OrderingFilter]
+    # "^": Start-with search, "=":Exact matches, "@":Full-text search, "$":Regex search
+    # get_search_fields 함수로 구현 가능
+    search_fields = ['message']
+    ordering_fields = ['id'] # 미지정시 serializer_class에 지정된 필드들.
+    ordering = ['-id'] # 디폴트 정렬을 지정
+
+    # 자신이 적은 포스팅만 조회하기
+    # def get_queryset(self):
+    #     qs = super().get_queryset().filter(author=self.request.user)
+    #     return qs
+
+    # Filtering, Ordering 예시
+    # def get_queryset(self):
+    #     q = self.request.query_params.get('q', '')
+    #     qs = super().get_queryset()
+    #     if q:
+    #         qs = qs.filter(message__icontains=q)
+    #     return qs.order_by('-id')
 
     # def create(self, request):
     #     serializer = self.get_serializer(data=request.data)
