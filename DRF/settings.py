@@ -152,4 +152,11 @@ REST_FRAMEWORK = {
     ],
     'PAGE_SIZE': 10,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '3/day', # 하루 최대 100회 요청 가능
+        # 'anon': None,
+    },
 }
