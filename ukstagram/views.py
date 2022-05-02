@@ -38,7 +38,7 @@ class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    permission_classes = [IsAuthorOrReadOnly] # 인증이 되어있음을 보장 받을 수 있음
+    permission_classes = [IsAuthorOrReadOnly]
 
     filter_backends = [SearchFilter, OrderingFilter]
     # "^": Start-with search, "=":Exact matches, "@":Full-text search, "$":Regex search
