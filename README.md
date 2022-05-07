@@ -1,2 +1,2 @@
 # DRF
-Django Rest Framework
+practice DRF
